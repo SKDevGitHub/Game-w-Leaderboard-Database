@@ -40,47 +40,79 @@ class ServerRequestHandler:
             print(f"Receive error: {e}")
             return None
 
-    def register(username: str, password: str) -> bool:
+    def register(self, username: str, password: str) -> bool:
         """Return true if successful"""
-        pass
+        self._send(f'INSERT INTO User VALUES ({username},{password})')
+        result = self._recv()
+        return result == "" # no error
 
-    def login(username: str, password: str) -> bool:
+    def login(self, username: str, password: str) -> bool:
         """Return true if successful"""
-        pass
+        """TODO: Return UserID"""
+        self._send(f'SELECT * FROM User WHERE username={username} AND password={password}')
+        result = self._recv()
+        return result != "" # user is found
 
-    def leaderboard_data_query(level_id: int) -> list:
-        pass
+    def leaderboard_data_query(self, level_id: int) -> list:
+        self._send(f'SELECT userID, score, dos FROM Level JOIN Submission JOIN Solution WHERE levelId={level_id}')
+        result = self._recv()
+        return result # TODO: Parse into list
 
-    def get_level_data(level_id: int) -> str:
-        pass
+    def get_level_data(self, level_id: int) -> str:
+        self._send(f'SELECT levelFile FROM Level WHERE levelId={level_id}')
+        result = self._recv()
+        return result
 
-    def get_level_comments(level_id: int) -> list:
-        pass
+    def get_level_comments(self, level_id: int) -> list:
+        self._send(f'SELECT * FROM Comments WHERE levelId={level_id}')
+        result = self._recv()
+        return result # TODO: Parse into list
 
-    def submit_new_level(level_string_representation: str, level_name: str, username: str) -> bool:
+    def submit_new_level(self, level_string_representation: str, level_name: str, username: str) -> bool:
         """Return true if successful"""
-        pass
+         # TODO: Figure out how to auto-generate primary key
+        self._send(f'INSERT INTO Level VALUES ({level_name}, {level_string_representation}, {username})')
+        result = self._recv()
+        return result == "" # no error
 
-    def create_comment(username: str, level_id: int, comment_text: str) -> bool:
+    def create_comment(self, username: str, level_id: int, comment_text: str) -> bool:
         """Return true if successful"""
-        pass
+        # TODO: Figure out how to auto-generate primary key
+        self._send(f'INSERT INTO Comments VALUES (0, 0, {comment_text}, {username}, {level_id})')
+        result = self._recv()
+        return result == "" # no error
 
-    def like_comment(comment_id: int) -> bool:
+    def like_comment(self, comment_id: int) -> bool:
         """Return true if successful"""
-        pass
+        self._send(f'UPDATE Comments SET likes = likes + 1)')
+        result = self._recv()
+        return result == "" # no error
 
-    def dislike_comment(comment_id: int) -> bool:
+    def dislike_comment(self, comment_id: int) -> bool:
         """Return true if successful"""
+        self._send(f'UPDATE Comments SET dislikes = dislikes + 1)')
+        result = self._recv()
+        return result == "" # no error
         pass
 
-    def get_user_data(username: str): # return TBD
-        pass
+    def get_user_data(self, username: str): # return TBD
+        self._send(f'SELECT * FROM SUBMISSION JOIN SOLUTION WHERE userID={username}')
+        solutions = self._recv()
+        self._send(f'SELECT * FROM Comments WHERE userID={username}')
+        comments = self._recv()
+        return (solutions,comments) # TODO: Parse both into lists
 
-    def search_for_level(search_str: str) -> list:
-        pass
+    def search_for_level(self, search_str: str) -> list:
+        # TODO: Levenshtien distance?
+        self._send(f'SELECT * FROM Levels WHERE levelName LIKE {search_str}')
+        result = self._recv()
+        return result # TODO: Parse into list
 
-    def search_for_user(search_str: str) -> list:
-        pass
+    def search_for_user(self, search_str: str) -> list:
+        # TODO: Levenshtien distance?
+        self._send(f'SELECT * FROM Users WHERE username LIKE {search_str}')
+        result = self._recv()
+        return result # TODO: Parse into list
 
     def close(self):
         """Close connection to the backend"""
