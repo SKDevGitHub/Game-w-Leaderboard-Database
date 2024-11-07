@@ -10,12 +10,12 @@ window = pygame.display.set_mode((width, height))
 
 pygame.display.set_caption("Dungeon Crawler")
 
-floorImg = pygame.image.load('floor.png')
-wallImg = pygame.image.load('wall.png')
-demonImg = pygame.image.load('demon.png')
-ogreImg = pygame.image.load('ogre.png')
-actManImg = pygame.image.load('act-man.png')
-corpseImg = pygame.image.load('corpse.png')
+floorImg = pygame.image.load('assets/floor.png')
+wallImg = pygame.image.load('assets/wall.png')
+demonImg = pygame.image.load('assets/demon.png')
+ogreImg = pygame.image.load('assets/ogre.png')
+actManImg = pygame.image.load('assets/act-man.png')
+corpseImg = pygame.image.load('assets/corpse.png')
 
 floorImg = pygame.transform.scale(floorImg, (tileSize, tileSize))
 wallImg = pygame.transform.scale(wallImg, (tileSize, tileSize))
