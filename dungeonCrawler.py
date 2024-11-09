@@ -29,10 +29,10 @@ moveMap = {
     pygame.K_d: (0, 1),         # Right
     pygame.K_s: (1, 0),         # Down
     pygame.K_a: (0, -1),        # Left
-    'w+d': (-1, 1),             # Diagonal Up-Right
-    'w+a': (-1, -1),            # Diagonal Up-Left
-    's+d': (1, 1),              # Diagonal Down-Right
-    's+a': (1, -1)              # Diagonal Down-Left
+    pygame.K_e: (-1, 1),        # Diagonal Up-Right
+    pygame.K_q: (-1, -1),       # Diagonal Up-Left
+    pygame.K_x: (1, 1),         # Diagonal Down-Right
+    pygame.K_z: (1, -1)         # Diagonal Down-Left
 }
 
 def boardLoader(filename):
@@ -72,13 +72,13 @@ def handlePlayerMovement(board, playerPos):
     keys = pygame.key.get_pressed()
 
     # Check for diagonal movement
-    if keys[pygame.K_w] and keys[pygame.K_d]:
+    if keys[pygame.K_e]:
         direction = (-1, 1)  # Up-Right
-    elif keys[pygame.K_w] and keys[pygame.K_a]:
+    elif keys[pygame.K_q]:
         direction = (-1, -1)  # Up-Left
-    elif keys[pygame.K_s] and keys[pygame.K_d]:
+    elif keys[pygame.K_x]:
         direction = (1, 1)  # Down-Right
-    elif keys[pygame.K_s] and keys[pygame.K_a]:
+    elif keys[pygame.K_z]:
         direction = (1, -1)  # Down-Left
     # Check for single direction movement
     elif keys[pygame.K_w]:
