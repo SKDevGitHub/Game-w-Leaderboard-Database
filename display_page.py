@@ -29,3 +29,6 @@ while True:
         display_level_designer()
         #go back to landing afterwards
         display_page = "landing"
+    
+    elif display_page == "quit" or username == None:
+        break
