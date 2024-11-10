@@ -12,7 +12,12 @@ def display_level(levelname, username):
         #solution = dungeonCrawler.main()
         x=None
         
-        
+    def display_leaderboard(event):
+        lb = Tk()
+        lb.title(levelname)
+        lb.geometry("400x200")
+
+        #TODO: query for leaderboard data and put it in listbox w/scrollbar
 
     def closed_window():
         #TODO: do i need this?
@@ -104,7 +109,13 @@ def display_level(levelname, username):
     #if the window is closed, end application
     root.protocol("WM_DELETE_WINDOW", closed_window)
 
+    #leaderboard
+    leaderboard_button = Button(root,text="View Leaderboard")
+    leaderboard_button.bind("<Button-1>", display_leaderboard)
+    leaderboard_button.grid(row=1,column=0,sticky='s')
+
     root.mainloop()
+    #client.close()
 
 
 
