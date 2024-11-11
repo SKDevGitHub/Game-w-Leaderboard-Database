@@ -5,6 +5,7 @@ from PIL import ImageTk, Image
 class Level_designer():
     def __init__(self, username):
         self.username = username
+        self.buttons_placed_flag = False
 
         self.root = Tk()
         self.root.title("Dungeon Crawler")
@@ -75,8 +76,10 @@ class Level_designer():
     
     def populate_board(self, event):
         #remove all buttons
-        
-
+        if(self.buttons_placed_flag):
+            for row in self.tiles:
+                for tile in row:
+                    tile.destroy()
 
         #calculate the appropriate image size
         #each square can have 600/max(height,width) height and with
@@ -110,6 +113,7 @@ class Level_designer():
                     self.tiles[i].append(Button(self.board, image=self.fl_button_img,height=dimension,width=dimension))
                 self.tiles[i][j].bind("<Button-1>", lambda event, row=j, col=i: self.change_tile(row,col))
                 self.tiles[i][j].grid(row=j,column=i)
+        self.buttons_placed_flag = True
 
     def change_tile(self, j,i):
         new_string = self.selected.get()
