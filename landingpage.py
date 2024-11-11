@@ -46,12 +46,12 @@ class landingPage(tk.Frame):
         root.title("Landing Page")
 
         def search_page(page_name):
-        # Check if the page exists in the page_names dictionary
-        page_class = self.page_names.get(page_name.lower())
-        if page_class:
-            self.show_frame(page_class)
-        else:
-            print("Page not found")
+            # Check if the page exists in the page_names dictionary
+            page_class = self.page_names.get(page_name.lower())
+            if page_class:
+                self.show_frame(page_class)
+            else:
+                print("Page not found")
     
         # Initialize and display the landing page
         landing = landingPage(root, search_page)
