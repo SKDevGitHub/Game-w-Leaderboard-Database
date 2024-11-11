@@ -16,7 +16,7 @@ class landingPage(tk.Frame):
         self.search_level.pack(pady=(5,10))
 
         search_lbutton = tk.Button(self, text="Search User", command=self.searchLevel)
-        search_lbutton.pack((pady=(0,20))
+        search_lbutton.pack(pady=(0,20))
 
         userLabel = tk.Label(self, text = "Search Level", font = FONT)
         userLabel.pack(pady=(10,0))
