@@ -114,6 +114,11 @@ def display_level(levelname, username):
     leaderboard_button.bind("<Button-1>", display_leaderboard)
     leaderboard_button.grid(row=1,column=0,sticky='s')
 
+    #amount of users played TODO:query for users played amount
+    amount_played = 3
+    amount_played_button = Label(root, text=f'{amount_played} users completed')
+    amount_played_button.grid(column=3,row=0)
+
     root.mainloop()
     #client.close()
 

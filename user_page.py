@@ -1,6 +1,6 @@
 from tkinter import Tk, Listbox, Scrollbar, Button, Label
 import tkinter as tk
-#TODO: amount of users played
+
 
 class User_page:
     def __init__(self, username):
