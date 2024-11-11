@@ -8,6 +8,7 @@ FONT = ("Verdana", 12)
 class landingPage(tk.Frame):
     def __init__(self,parent,controller):
         tk.Frame.__init__(self,parent)
+        self.controller = controller
         label = tk.Label(self, text = "Landing Page", font = FONT)
         label.pack(pady = 10, padx = 10)
         
@@ -38,6 +39,26 @@ class landingPage(tk.Frame):
     def searchUser(self, controller): 
         userName = self.search_user.get()
         controller.search_page(userName)
+        
+    def main():
+        # Initialize Tkinter root window
+        root = tk.Tk()
+        root.title("Landing Page")
+
+        def search_page(page_name):
+        # Check if the page exists in the page_names dictionary
+        page_class = self.page_names.get(page_name.lower())
+        if page_class:
+            self.show_frame(page_class)
+        else:
+            print("Page not found")
+    
+        # Initialize and display the landing page
+        landing = landingPage(root, search_page)
+        landing.pack()
+    
+        # Run the Tkinter main loop
+        root.mainloop()
 
 if __name__ == "__main__":
-    x = landingPage('y')
+    main()
