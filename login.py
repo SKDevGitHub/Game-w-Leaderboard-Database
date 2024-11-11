@@ -43,7 +43,7 @@ def display_login():
     title_label = tk.Label(
         login_register_window, 
         text="ACT MAN ONLINE", 
-        font=("Impact", 24, "bold"), 
+        font=("TkDefaultFont", 24, "bold"), 
         bg="black", 
         fg="red"
     )
@@ -57,26 +57,26 @@ def display_login():
     username_label = tk.Label(
         frame, 
         text="USERNAME:", 
-        font=("Arial", 12, "bold"), 
+        font=("TkDefaultFont", 12, "bold"), 
         bg="#8B0000", 
         fg="black"
     )
     username_label.grid(row=0, column=0, padx=10, pady=5, sticky="w")
 
-    username_entry = tk.Entry(frame, font=("Arial", 12), width=20, bd=0, bg="black", fg="red", insertbackground="red")
+    username_entry = tk.Entry(frame, font=("TkDefaultFont", 12), width=20, bd=0, bg="black", fg="red", insertbackground="red")
     username_entry.grid(row=0, column=1, padx=10, pady=5)
 
     # Password input
     password_label = tk.Label(
         frame, 
         text="PASSWORD:", 
-        font=("Arial", 12, "bold"), 
+        font=("TkDefaultFont", 12, "bold"), 
         bg="#8B0000", 
         fg="black"
     )
     password_label.grid(row=1, column=0, padx=10, pady=5, sticky="w")
 
-    password_entry = tk.Entry(frame, font=("Arial", 12), show="*", width=20, bd=0, bg="black", fg="red", insertbackground="red")
+    password_entry = tk.Entry(frame, font=("TkDefaultFont", 12), show="*", width=20, bd=0, bg="black", fg="red", insertbackground="red")
     password_entry.grid(row=1, column=1, padx=10, pady=5)
 
     # Buttons
@@ -88,7 +88,7 @@ def display_login():
         button_frame, 
         text="REGISTER", 
         command=process_register, 
-        font=("Arial", 12, "bold"), 
+        font=("TkDefaultFont", 12, "bold"), 
         bg="#8B0000", 
         fg="black", 
         width=10, 
@@ -104,7 +104,7 @@ def display_login():
         button_frame, 
         text="LOGIN", 
         command=process_login, 
-        font=("Arial", 12, "bold"), 
+        font=("TkDefaultFont", 12, "bold"), 
         bg="#8B0000", 
         fg="black", 
         width=10, 
@@ -120,5 +120,5 @@ def display_login():
 
     return user_logged_in
 
-#if __name__ == "__main__":
-        #display_login()
+if __name__ == "__main__":
+        display_login()
