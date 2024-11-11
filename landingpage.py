@@ -40,25 +40,21 @@ class landingPage(tk.Frame):
         userName = self.search_user.get()
         controller.search_page(userName)
         
-    def main():
-        # Initialize Tkinter root window
-        root = tk.Tk()
-        root.title("Landing Page")
+def main():
+    root = tk.Tk()
+    root.title("Landing Page")
 
-        def search_page(page_name):
-            # Check if the page exists in the page_names dictionary
-            page_class = self.page_names.get(page_name.lower())
-            if page_class:
-                self.show_frame(page_class)
-            else:
-                print("Page not found")
-    
-        # Initialize and display the landing page
-        landing = landingPage(root, search_page)
-        landing.pack()
-    
-        # Run the Tkinter main loop
-        root.mainloop()
+    def search_page(page_name):
+        page_class = self.page_names.get(page_name.lower())
+        if page_class:
+            self.show_frame(page_class)
+        else:
+            print("Page not found")
+
+    landing = landingPage(root, search_page)
+    landing.pack()
+
+    root.mainloop()
 
 if __name__ == "__main__":
     main()
