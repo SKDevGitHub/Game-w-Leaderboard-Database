@@ -6,23 +6,26 @@ class landingPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
-        label = tk.Label(self, text="Landing Page", font=FONT)
-        label.pack(pady=10, padx=10)
-        
-        # Level Search Entry
+        label = tk.Label(self, text="Landing Page", font=("Verdana", 16, "bold"))
+        label.pack(pady=20)
+
+        levelLabel = tk.Label(self, text = "Search Level", font = FONT)
+        levelLabel.pack(pady=(10,0)
+                        
         self.search_level = tk.Entry(self, font=FONT)
-        self.search_level.pack(pady=10)
+        self.search_level.pack(pady=(5,10))
+
+        search_lbutton = tk.Button(self, text="Search User", command=self.searchLevel)
+        search_lbutton.pack((pady=(0,20))
+
+        userLabel = tk.Label(self, text = "Search Level", font = FONT)
+        userLabel.pack(pady=(10,0)
         
-        # User Search Entry
         self.search_user = tk.Entry(self, font=FONT)
-        self.search_user.pack(pady=10)
-        
-        # Buttons for Search
-        search_lbutton = tk.Button(self, text="Search Level", command=self.searchLevel)
-        search_lbutton.pack()
+        self.search_user.pack(pady=(5,10))
         
         search_ubutton = tk.Button(self, text="Search User", command=self.searchUser)
-        search_ubutton.pack()
+        search_ubutton.pack(pady=(0,20))
     
     def searchLevel(self):
         levelName = self.search_level.get()
@@ -33,29 +36,25 @@ class landingPage(tk.Frame):
         self.controller(userName)
 
 def main():
-    # Define page names mapping
     page_names = {
-        "game": "GamePage",  # Replace with actual class if available
-        "user": "UserPage"   # Replace with actual class if available
+        "game": "GamePage", 
+        "user": "UserPage"  
     }
 
-    # Define the function to handle page search
     def search_page(page_name):
         page_class = page_names.get(page_name.lower())
         if page_class:
-            print(f"Navigating to: {page_class}")  # Placeholder for navigation
+            print(f"Navigating to: {page_class}")  
         else:
             print("Page not found")
 
-    # Initialize Tkinter root window
     root = tk.Tk()
     root.title("Landing Page")
+    root.geometry("400x400")
 
-    # Initialize and display the landing page
     landing = landingPage(root, search_page)
-    landing.pack()
+    landing.pack(fill = "both", expand = True)
 
-    # Run the Tkinter main loop
     root.mainloop()
 
 if __name__ == "__main__":
