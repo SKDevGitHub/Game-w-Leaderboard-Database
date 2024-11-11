@@ -70,7 +70,7 @@ class DatabaseServer:
                     userName TEXT NOT NULL,
                     levelName TEXT NOT NULL,
                     FOREIGN KEY (userName) REFERENCES User(username),
-                    FOREIGN KEY (levelName) REFERENCES (levelName)
+                    FOREIGN KEY (levelName) REFERENCES Level(levelName)
                 )
             ''')
             self.conn.commit()
