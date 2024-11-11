@@ -10,7 +10,7 @@ class landingPage(tk.Frame):
         label.pack(pady=20)
 
         levelLabel = tk.Label(self, text = "Search Level", font = FONT)
-        levelLabel.pack(pady=(10,0)
+        levelLabel.pack(pady=(10,0))
                         
         self.search_level = tk.Entry(self, font=FONT)
         self.search_level.pack(pady=(5,10))
@@ -19,7 +19,7 @@ class landingPage(tk.Frame):
         search_lbutton.pack((pady=(0,20))
 
         userLabel = tk.Label(self, text = "Search Level", font = FONT)
-        userLabel.pack(pady=(10,0)
+        userLabel.pack(pady=(10,0))
         
         self.search_user = tk.Entry(self, font=FONT)
         self.search_user.pack(pady=(5,10))
