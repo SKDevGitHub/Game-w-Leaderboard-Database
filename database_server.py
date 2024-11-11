@@ -24,8 +24,7 @@ class DatabaseServer:
             ''')
             cursor.execute('''
                 CREATE TABLE IF NOT EXISTS Level (
-                    levelId INTEGER PRIMARY KEY,
-                    levelName TEXT,
+                    levelName TEXT PRIMARY KEY,
                     levelFile TEXT,
                     creatorId TEXT NOT NULL,
                     FOREIGN KEY (creatorId) REFERENCES User(username)
@@ -38,9 +37,9 @@ class DatabaseServer:
                     commentText TEXT,
                     commentId INTEGER PRIMARY KEY,
                     userId TEXT NOT NULL,
-                    levelId INTEGER NOT NULL,
+                    levelName TEXT NOT NULL,
                     FOREIGN KEY (userId) REFERENCES User(username),
-                    FOREIGN KEY (levelId) REFERENCES Level(levelId)
+                    FOREIGN KEY (levelName) REFERENCES Level(levelName)
                 )
             ''')
             cursor.execute('''
@@ -58,10 +57,20 @@ class DatabaseServer:
                     dos TEXT,
                     solutionId INTEGER NOT NULL,
                     userId TEXT NOT NULL,
-                    levelId INTEGER NOT NULL,
+                    levelName TEXT NOT NULL,
                     FOREIGN KEY (userId) REFERENCES User(username),
-                    FOREIGN KEY (levelId) REFERENCES Level(levelId),
+                    FOREIGN KEY (levelName) REFERENCES Level(levelName),
                     FOREIGN KEY (solutionId) REFERENCES Solution(solutionId)
+                )
+            ''')
+            cursor.execute('''
+                CREATE TABLE IF NOT EXISTS Rating (
+                    userRating INTEGER,
+                    diffRating INTEGER,
+                    userName TEXT NOT NULL,
+                    levelName TEXT NOT NULL,
+                    FOREIGN KEY (userName) REFERENCES User(username),
+                    FOREIGN KEY (levelName) REFERENCES (levelName)
                 )
             ''')
             self.conn.commit()
