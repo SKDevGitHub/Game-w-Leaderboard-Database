@@ -345,6 +345,7 @@ def main():
             result = "Win!" if playerWon else "Lose!"
             displayGameOver(score, result)
             running = False
+            print(f"Score: {score}   MoveList: {moveList}")
 
     pygame.quit()
 
