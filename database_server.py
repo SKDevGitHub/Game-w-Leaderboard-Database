@@ -69,6 +69,7 @@ class DatabaseServer:
                     diffRating INTEGER,
                     userName TEXT NOT NULL,
                     levelName TEXT NOT NULL,
+                    PRIMARY KEY (userName, levelName),
                     FOREIGN KEY (userName) REFERENCES User(username),
                     FOREIGN KEY (levelName) REFERENCES Level(levelName)
                 )
