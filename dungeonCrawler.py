@@ -248,7 +248,7 @@ def displayGameOver(score, result):
     pygame.time.delay(3000)
 
 def main():
-    board = boardLoader('board1.txt')
+    board = boardLoader('board2.txt')
     rows = len(board)
     columns = len(board[0])
 
