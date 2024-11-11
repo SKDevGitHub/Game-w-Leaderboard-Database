@@ -38,3 +38,6 @@ class landingPage(tk.Frame):
     def searchUser(self, controller): 
         userName = self.search_user.get()
         controller.search_page(userName)
+
+if __name__ == "__main__":
+    x = landingPage('y')
