@@ -1,4 +1,4 @@
-from tkinter import Button, Label, Tk, Scrollbar, Entry, Listbox
+from tkinter import Button, Label, Tk, Scrollbar, Entry, Listbox, OptionMenu
 import tkinter as tk
 from server_request_handler import ServerRequestHandler
 #import dungeonCrawler
@@ -8,10 +8,22 @@ from server_request_handler import ServerRequestHandler
 def display_level(levelname, username):
     
     def play_game(event):
-        #TODO
-        #solution = dungeonCrawler.main()
-        x=None
-        
+        #TODO remove and add widgets
+        #solution, score = dungeonCrawler.startGame()
+        display_rating_section()
+
+
+    def display_rating_section():
+        diff_rating_menu.grid(column=6,row=1,sticky='e')
+        rating_menu.grid(column=6,row=1,sticky='w')
+        rating_label.grid(column=6,row=1,sticky='n')
+        submit_rating_button.grid(column=6, row=2,sticky='n')
+
+
+    def submit_rating(event):
+        #TODO:
+        x=1
+
     def display_leaderboard(event):
         lb = Tk()
         lb.title(levelname)
@@ -63,6 +75,7 @@ def display_level(levelname, username):
     root.rowconfigure((0,1,2), weight=1)
     root.rowconfigure(3, weight=3)
     root.columnconfigure((0,1,2,3,4,5,6),weight=1)
+    level_played_flag = False
 
     #comments section init
     comment_box = Listbox(root, selectmode=tk.SINGLE)
@@ -81,7 +94,7 @@ def display_level(levelname, username):
     play_level_button = Button(root, text="Play " + levelname[:10])
     title.grid(row=0,column=3,sticky='n')
     play_level_button.bind("<Button-1>", play_game)
-    play_level_button.grid(row=1,column=3, sticky="n")
+    play_level_button.grid(row=0,column=4, sticky="n")
 
     #add a comment
     comment_label = Label(root, text="Enter a comment:")
@@ -119,6 +132,25 @@ def display_level(levelname, username):
     amount_played_button = Label(root, text=f'{amount_played} users completed')
     amount_played_button.grid(column=3,row=0)
 
+    #submit ratings
+    diff_rating = tk.IntVar()
+    diff_rating.set(10)
+    diff_rating_menu = OptionMenu(root, diff_rating, 0,1,2,3,4,5,6,7,8,9,10)
+    rating = tk.IntVar()
+    rating.set(10)
+    rating_menu = OptionMenu(root, rating, 0,1,2,3,4,5,6,7,8,9,10)
+    rating_label = Label(root, text='Rating,Difficulty:')
+    submit_rating_button = Button(root, text='Submit Ratings')
+    submit_rating_button.bind("<Button-1>", submit_rating)
+
+    #display ratings TODO: query for difficulty and user rating
+    display_diff_rating = 8.2
+    display_diff_rating_label = Label(root, text=f'Difficulty rating: {display_diff_rating}/10')
+    display_diff_rating_label.grid(column=3,row=1, sticky='n')
+    display_rating = 8.5
+    display_rating_label = Label(root, text=f'User rating: {display_rating}/10')
+    display_rating_label.grid(column=3,row=1)
+    
     root.mainloop()
     #client.close()
 
