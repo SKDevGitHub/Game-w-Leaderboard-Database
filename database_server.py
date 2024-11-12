@@ -43,24 +43,15 @@ class DatabaseServer:
                 )
             ''')
             cursor.execute('''
-                CREATE TABLE IF NOT EXISTS Solution (
-                    solutionId INTEGER PRIMARY KEY,
-                    score INTEGER,
-                    movelist TEXT,
-                    userId TEXT NOT NULL,
-                    FOREIGN KEY (userId) REFERENCES User(username)
-                )
-            ''')
-            cursor.execute('''
                 CREATE TABLE IF NOT EXISTS Submission (
                     submissionId INTEGER PRIMARY KEY,
                     dos TEXT,
-                    solutionId INTEGER NOT NULL,
                     userId TEXT NOT NULL,
                     levelName TEXT NOT NULL,
+                    score INTEGER,
+                    movelist TEXT,
                     FOREIGN KEY (userId) REFERENCES User(username),
-                    FOREIGN KEY (levelName) REFERENCES Level(levelName),
-                    FOREIGN KEY (solutionId) REFERENCES Solution(solutionId)
+                    FOREIGN KEY (levelName) REFERENCES Level(levelName)
                 )
             ''')
             cursor.execute('''

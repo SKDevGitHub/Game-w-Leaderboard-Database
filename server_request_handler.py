@@ -71,19 +71,14 @@ def get_level_data(level_name: int) -> tuple:
 
 def submit_solution(username: str, level_name: int, movelist: str, score: int) -> bool:
     """return true if successful, DOES NOT VERIFY SOLUTION"""
-    _send(f'INSERT INTO Solution VALUES (NULL, \"{score}\", \"{movelist}\", \"{username}\")')
-    recv_val = _recv()
-    if recv_val != 'Success': return False # inserting solution failed
-    _send(f'SELECT solutionID FROM Solution WHERE movelist=\"{movelist}\" AND userID=\"{username}\"')
-    solID = int(_recv().strip('[(,)]'))
-    _send(f'INSERT INTO Submission VALUES (NULL, CURRENT_TIMESTAMP, {solID}, \"{username}\", \"{level_name}\")')
+    _send(f'INSERT INTO Submission VALUES (NULL, CURRENT_TIMESTAMP, \"{username}\", \"{level_name}\", {score}, \"{movelist}\")')
     result = _recv()
     return result == 'Success'
 
 def get_user_completed_levels(username: str) -> list:
-    """returns a list of strings"""
-    _send(f'SELECT levelName FROM Submission WHERE userId = {username}')
-    levels = _recv()
+    """returns a list of strings, with all level names completed by the specified user"""
+    _send(f'SELECT levelName FROM Submission WHERE userId = \"{username}\"')
+    levels = [tup[0] for tup in ast.literal_eval(_recv())]
     return levels # TODO: Parse
 
 def leaderboard_data_query(level_name: int) -> list:
@@ -166,14 +161,26 @@ if __name__ == '__main__':
     login_succ_2 = login('joe miner', 'pickaxesarecool38')
     assert(login_succ_2 == True)
     test_level_str = ''
+    test_level_str_2 = ''
     with open('board1.txt','r') as b1:
         test_level_str = b1.read()
+    with open('board2.txt','r') as b2:
+        test_level_str_2 = b2.read()
+    
     submit_level_succ = submit_new_level(test_level_str, 'joe miners bad day', 'joe miner')
     assert(submit_level_succ == True)
     get_level_out = get_level_data('joe miners bad day')
     assert(get_level_out == (test_level_str,'joe miner'))
     submit_sol_succ = submit_solution('joe miner', 'joe miners bad day', '<<>>V^^s', 220)
     assert(submit_sol_succ == True)
+
+    submit_level_succ = submit_new_level(test_level_str_2, 'hardest level ever', 'joe miner')
+    assert(submit_level_succ == True)
+    get_level_out = get_level_data('hardest level ever')
+    assert(get_level_out == (test_level_str_2,'joe miner'))
+    submit_sol_succ = submit_solution('joe miner', 'hardest level ever', '<<>>V^^s', 220)
+    assert(submit_sol_succ == True)
+
     completed_levels = get_user_completed_levels('joe miner')
 
 
