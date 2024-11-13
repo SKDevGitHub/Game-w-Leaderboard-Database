@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import Button, Label, Tk, Frame, Radiobutton, OptionMenu
-from PIL import ImageTk, Image
+from PIL import ImageTk, Image #pip install Pillow
 
 class Level_designer():
     def __init__(self, username):

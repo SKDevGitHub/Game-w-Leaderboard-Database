@@ -1,6 +1,6 @@
 from tkinter import Button, Label, Tk, Scrollbar, Entry, Listbox, OptionMenu
 import tkinter as tk
-from server_request_handler import ServerRequestHandler
+import server_request_handler as query
 #import dungeonCrawler
 
 
@@ -8,7 +8,7 @@ from server_request_handler import ServerRequestHandler
 def display_level(levelname, username):
     
     def play_game(event):
-        #TODO remove and add widgets
+        #TODO 
         #solution, score = dungeonCrawler.startGame()
         display_rating_section()
 
@@ -21,15 +21,37 @@ def display_level(levelname, username):
 
 
     def submit_rating(event):
-        #TODO:
-        x=1
+        query.rate_level(username, rating.get(),diff_rating.get(), levelname)
+
+        rating_menu.destroy()
+        rating_label.destroy()
+        diff_rating_menu.destroy()
+        submit_rating_button.destroy()
+        play_level_button.destroy()
+        
 
     def display_leaderboard(event):
         lb = Tk()
-        lb.title(levelname)
+        lb.title(f'{levelname} leaderboard')
         lb.geometry("400x200")
 
-        #TODO: query for leaderboard data and put it in listbox w/scrollbar
+        lb.columnconfigure((0,1),weight=1)
+        lb.rowconfigure((0,1),weight=1)
+
+        leaderboard = Listbox(lb, selectmode='single')
+        leaderboard.grid(row=0,column=0,sticky='nswe',rowspan=2,columnspan=2)
+        lb_scroller = Scrollbar(lb, orient='vertical',command=leaderboard.yview)
+        lb_scroller.grid(row=0,rowspan=2,column=1,sticky='nes')
+
+        #insert leaderboard tuples
+        rank = 1
+        for tuple in leaderboard_data:
+            leaderboard.insert('end',f'{rank}. Username: {tuple[0]}, Score: {tuple[1]}, Date: {tuple[2][:10]}')
+            rank = rank + 1
+        if leaderboard_data == []:
+            leaderboard.insert('end', 'No users have completed this level')
+        
+
 
     def closed_window():
         #TODO: do i need this?
@@ -43,30 +65,24 @@ def display_level(levelname, username):
         text = comment_entry.get()
         comment_entry.delete(0, tk.END)
 
-        #TODO: client.create_comment()
+        query.create_comment(text,username,levelname)
 
     def like_comment(event):
         index = comment_box.curselection()
         index = index[0]
-        #TODO: change this based on what the query returns
-
-        #commentID = comments[index][3]
-        #client.like_comment(commentID)
+        comment_id = comments[index][3]
+        query.like_comment(comment_id)
 
     def dislike_comment(event):
         index = comment_box.curselection()
         index = index[0]
-        #TODO: change this based on what the query returns
 
-        #commentID = comments[index][3]
-        #client.dislike_comment(commentID)
+        comment_id = comments[index][3]
+        query.dislike_comment(comment_id)
     
     #query for comments
-    #client = ServerRequestHandler
-    #comments = client.find_comments(levelname)
-    #test value
-    comments = [["comment text", 2, 0, 6]]
-    comment_amount = len(comments)
+    comments = query.get_level_comments(levelname)
+
 
     #create gui
     root = Tk()
@@ -80,14 +96,17 @@ def display_level(levelname, username):
     #comments section init
     comment_box = Listbox(root, selectmode=tk.SINGLE)
     comment_box.grid(row=3, sticky='nsew',columnspan=7)
-    #TODO: change range(50) to comment amount
-    for n in range(50):
-        #TODO: save the id of each comment
-        comment_box.insert(tk.END, f'{comments[0][0]} : {n} likes, {comments[0][2]} dislikes')
+    for c in comments:
+        comment_box.insert('end', f'{c[4]} says: {c[2]} -> {c[0]} likes, {c[1]} dislikes')
+    if comments == []:
+        comment_box.insert('end', "No Comments Yet")
     
-    scroller = Scrollbar(root, orient=tk.VERTICAL, command=comment_box.yview)
+    #scrollbars
+    scroller = Scrollbar(root, orient='vertical', command=comment_box.yview)
     scroller.grid(row=3,column=6, sticky="nse")
     comment_box.config(yscrollcommand=scroller.set)
+    yscroller = Scrollbar(root, orient='horizontal',command=comment_box.xview)
+    yscroller.grid(column=0,columnspan=7,row=3,sticky='wse')
 
     #play level button
     title = Label(root, text="level: " + levelname, font=("TkDefaultFont",16,"bold"))
@@ -123,12 +142,13 @@ def display_level(levelname, username):
     root.protocol("WM_DELETE_WINDOW", closed_window)
 
     #leaderboard
+    leaderboard_data = query.leaderboard_data_query(levelname)
     leaderboard_button = Button(root,text="View Leaderboard")
     leaderboard_button.bind("<Button-1>", display_leaderboard)
     leaderboard_button.grid(row=1,column=0,sticky='s')
 
-    #amount of users played TODO:query for users played amount
-    amount_played = 3
+    #amount of users played
+    amount_played = len(leaderboard_data)
     amount_played_button = Label(root, text=f'{amount_played} users completed')
     amount_played_button.grid(column=3,row=0)
 
@@ -143,16 +163,17 @@ def display_level(levelname, username):
     submit_rating_button = Button(root, text='Submit Ratings')
     submit_rating_button.bind("<Button-1>", submit_rating)
 
-    #display ratings TODO: query for difficulty and user rating
-    display_diff_rating = 8.2
-    display_diff_rating_label = Label(root, text=f'Difficulty rating: {display_diff_rating}/10')
+    #display ratings
+    ratings = query.get_level_ratings(levelname)
+    display_diff_rating = ratings[1]
+    display_diff_rating_label = Label(root, text=f'Difficulty rating: {display_diff_rating:.2f}/10')
     display_diff_rating_label.grid(column=3,row=1, sticky='n')
-    display_rating = 8.5
-    display_rating_label = Label(root, text=f'User rating: {display_rating}/10')
+    display_rating = ratings[0]
+    display_rating_label = Label(root, text=f'User rating: {display_rating:.2f}/10')
     display_rating_label.grid(column=3,row=1)
     
     root.mainloop()
-    #client.close()
+
 
 
 
@@ -160,4 +181,6 @@ def display_level(levelname, username):
 
 
 if __name__ == "__main__":
-    display_level('x','y')
+    query.connect('localhost', 2048)
+    display_level('joe miners bad day','Ben')
+    query.close_connection()
