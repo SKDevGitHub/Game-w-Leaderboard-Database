@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
-from server_request_handler import ServerRequestHandler
+from server_request_handler import login,register
+# TODO Test login with server connection
 # Uploaded Customized login page. Still have the non-customized if you want to revert back
 def display_login():
     user_logged_in = None
@@ -10,9 +11,8 @@ def display_login():
         nonlocal user_logged_in
         username = username_entry.get()
         password = password_entry.get()
-        # TODO Address Error at meeting
-        # if username == "test" and password == "password": # Test case
-        if ServerRequestHandler.login(ServerRequestHandler, username, password):  # True if login is successful
+
+        if login(username, password):  # True if login is successful
             user_logged_in = username
             messagebox.showinfo("Login Success", "You have successfully logged in!")
             login_register_window.destroy()  # Closes the login window
@@ -24,9 +24,8 @@ def display_login():
         nonlocal user_logged_in
         username = username_entry.get()
         password = password_entry.get()
-        # TODO Address Error at meeting
-        # if username == "test" and password == "password": # Test case
-        if ServerRequestHandler.register(ServerRequestHandler, username, password):  # True if registration is successful
+
+        if register(username, password):  # True if registration is successful
             user_logged_in = username
             messagebox.showinfo("Registration Success", "You have successfully registered!")
             login_register_window.destroy()  # Closes the registration window
@@ -120,5 +119,5 @@ def display_login():
 
     return user_logged_in
 
-if __name__ == "__main__":
-        display_login()
+#if __name__ == "__main__":
+        #display_login()
