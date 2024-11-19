@@ -6,7 +6,7 @@ import server_request_handler as query
 
 class Level_designer():
     def __init__(self, username):
-        query.connect('localhost',2048)
+
         self.username = username
         self.buttons_placed_flag = False
 
@@ -74,7 +74,6 @@ class Level_designer():
         self.back_button.grid(row=0,column=0,sticky='nw')
 
         self.root.mainloop()
-        query.close_connection()
 
     
     def go_back(self, event):
@@ -157,7 +156,6 @@ class Level_designer():
             self.filestring = self.filestring + '\n'
         
         #check that there is only 1 act man
-        print(act_man_count)
         if act_man_count != 1:
             messagebox.showerror("Error","You need to have exactly 1 act-man")
             return
@@ -189,4 +187,6 @@ class Level_designer():
 
 
 if __name__ == "__main__":
+    query.connect('localhost',2048)
     z = Level_designer('joe miner')
+    query.close_connection()

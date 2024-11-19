@@ -1,7 +1,7 @@
 from tkinter import Button, Label, Tk, Scrollbar, Entry, Listbox, OptionMenu
 import tkinter as tk
 import server_request_handler as query
-#import dungeonCrawler
+import dungeonCrawler
 
 
 
@@ -9,9 +9,10 @@ def display_level(levelname, username):
     
     def play_game(event):
         #TODO 
-        #solution, score = dungeonCrawler.startGame()
+        gamedata = dungeonCrawler.displayLevel(leveldata[0])
         display_rating_section()
-
+        if gamedata[0] != 0: #they beat the level
+            query.submit_solution(username,levelname,gamedata[1],gamedata[0])
 
     def display_rating_section():
         diff_rating_menu.grid(column=6,row=1,sticky='e')
@@ -91,7 +92,8 @@ def display_level(levelname, username):
     root.rowconfigure((0,1,2), weight=1)
     root.rowconfigure(3, weight=3)
     root.columnconfigure((0,1,2,3,4,5,6),weight=1)
-    level_played_flag = False
+    leveldata = query.get_level_data(levelname)
+    creator = leveldata[1]
 
     #comments section init
     comment_box = Listbox(root, selectmode=tk.SINGLE)
@@ -171,6 +173,10 @@ def display_level(levelname, username):
     display_rating = ratings[0]
     display_rating_label = Label(root, text=f'User rating: {display_rating:.2f}/10')
     display_rating_label.grid(column=3,row=1)
+
+    #display level creator
+    creator_label = Label(root,text=f'Creator: {creator}')
+    creator_label.grid(row=0,column=3,sticky='s')
     
     root.mainloop()
 
