@@ -1,16 +1,18 @@
 #import individual files here
+from landingpage import displayLanding
 
 display_page = "login"
 
 while True:
     if display_page == "login":
         
-        username = display_login()
+        username = input()
+        displayLanding(username)
         #this will only finish after the user logs in or registers
         display_page = "landing"
     
     elif display_page == "landing":
-        next_page, parameter = display_landing()
+        next_page, parameter = displayLanding(username)
 
         if next_page == "user":
             display_user(parameter)

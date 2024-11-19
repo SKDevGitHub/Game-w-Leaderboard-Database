@@ -21,6 +21,23 @@ def displayLanding(username):
             search_lbutton = tk.Button(self, text="Search User", command=self.searchLevel)
             search_lbutton.pack(pady=(0,20))
 
+def displayLanding(username):
+    class landingPage(tk.Frame):
+        def __init__(self, parent, controller):
+            tk.Frame.__init__(self, parent)
+            self.controller = controller
+            label = tk.Label(self, text="Landing Page", font=("Verdana", 16, "bold"))
+            label.pack(pady=20)
+
+            levelLabel = tk.Label(self, text = "Search Level", font = FONT)
+            levelLabel.pack(pady=(10,0))
+                            
+            self.search_level = tk.Entry(self, font=FONT)
+            self.search_level.pack(pady=(5,10))
+
+            search_lbutton = tk.Button(self, text="Search User", command=self.searchLevel)
+            search_lbutton.pack(pady=(0,20))
+
             userLabel = tk.Label(self, text = "Search Level", font = FONT)
             userLabel.pack(pady=(10,0))
             
@@ -44,10 +61,10 @@ def displayLanding(username):
                 dl.display_level(page_name, username)
             else:
                 tk.messagebox.showinfo("Level Not Found")
-
+    
         def search_user(page_name):
-            tk.messagebox.showinfo("Level Not Found")
-
+            pass
+        
         root = tk.Tk()
         root.title("Landing Page")
         root.geometry("400x400")
