@@ -350,6 +350,8 @@ def displayLevel(levelName):
             pygame.display.update()
             clock.tick(60)
         if gameOver:
+            for _ in range(len(moveList)):
+                score -= 1
             result = "Win!" if playerWon else "Lose!"
             displayGameOver(score, result)
             running = False
