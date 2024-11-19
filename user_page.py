@@ -91,7 +91,7 @@ def displayUser(username):
                 self.cr_box.insert('end','No levels created')
         
         def go_back(self, event):
-            self.root.quit()
+            self.root.destroy()
         
     page = User_page(username)
 
