@@ -36,12 +36,16 @@ def displayLevel(levelName):
         pygame.K_z: (1, -1)         # Diagonal Down-Left
     }
 
-    def boardLoader(filename):
+    def boardLoader(filestring):
         board = []
-        with open(filename, 'r') as file:
-            for line in file:
-                row = list(line.strip())
+        row=''
+        for c in filestring:
+            if c == '\n':
+                row = list(row)
                 board.append(row)
+                row = ''
+            else:
+                row = row + c
         return board
 
     def drawBoard(board):
@@ -261,15 +265,18 @@ def displayLevel(levelName):
 
     ogreCount, demonCount = enemyCounter(board)
 
+    moveList = []
+    score = 50
+
     while running:
         window.fill((0,0,0))
         
         ogres = []
         demons = []
         corpses = []
-        moveList = []
+        #moveList = []
         turnCount = 0
-        score = 50
+        #score = 50
         
         findEnemyPos(board, rows, columns, ogres, demons, corpses)
         

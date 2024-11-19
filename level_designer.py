@@ -1,9 +1,12 @@
 import tkinter as tk
-from tkinter import Button, Label, Tk, Frame, Radiobutton, OptionMenu
+from tkinter import Button, Label, Tk, Frame, Radiobutton, OptionMenu, messagebox, simpledialog
 from PIL import ImageTk, Image #pip install Pillow
+import dungeonCrawler
+import server_request_handler as query
 
 class Level_designer():
     def __init__(self, username):
+        query.connect('localhost',2048)
         self.username = username
         self.buttons_placed_flag = False
 
@@ -62,6 +65,7 @@ class Level_designer():
 
         #submit button TODO: submit to database
         self.submit_button = Button(self.root, text="Submit")
+        self.submit_button.bind("<Button-1>", self.submit)
         self.submit_button.grid(row=10,column=2)
 
         #back button
@@ -70,6 +74,8 @@ class Level_designer():
         self.back_button.grid(row=0,column=0,sticky='nw')
 
         self.root.mainloop()
+        query.close_connection()
+
     
     def go_back(self, event):
         self.root.quit()
@@ -89,11 +95,11 @@ class Level_designer():
         
         #create empty board and make the edges walls
         self.tilestrings = []
-        for i in range(self.width.get()):
+        for i in range(self.height.get()):
             self.tilestrings.append([])
-            for j in range(self.height.get()):
+            for j in range(self.width.get()):
                 self.tilestrings[i].append("floor")
-                if i == 0 or j==0 or i == (self.width.get()-1) or j == (self.height.get()-1):
+                if i == 0 or j==0 or j == (self.width.get()-1) or i == (self.height.get()-1):
                     self.tilestrings[i][j] = "wall"
     
         
@@ -104,40 +110,83 @@ class Level_designer():
         self.og_button_img = ImageTk.PhotoImage(Image.open("assets/ogre.png").resize((dimension,dimension)))
         self.wa_button_img = ImageTk.PhotoImage(Image.open("assets/wall.png").resize((dimension,dimension)))
         self.tiles = []
-        for i in range(self.width.get()):
+        for i in range(self.height.get()):
             self.tiles.append([])
-            for j in range(self.height.get()):
+            for j in range(self.width.get()):
                 if self.tilestrings[i][j] == "wall":
                     self.tiles[i].append(Button(self.board, image=self.wa_button_img,height=dimension,width=dimension))
                 elif self.tilestrings[i][j] == "floor":
                     self.tiles[i].append(Button(self.board, image=self.fl_button_img,height=dimension,width=dimension))
-                self.tiles[i][j].bind("<Button-1>", lambda event, row=j, col=i: self.change_tile(row,col))
-                self.tiles[i][j].grid(row=j,column=i)
+                self.tiles[i][j].bind("<Button-1>", lambda event, row=i, col=j: self.change_tile(row,col))
+                self.tiles[i][j].grid(row=i,column=j)
         self.buttons_placed_flag = True
 
     def change_tile(self, j,i):
         new_string = self.selected.get()
-        self.tilestrings[i][j] = new_string
+        self.tilestrings[j][i] = new_string
         if new_string == "act-man":
-            self.tiles[i][j].config(image=self.ac_button_img)
+            self.tiles[j][i].config(image=self.ac_button_img)
         elif new_string == "demon":
-            self.tiles[i][j].config(image=self.de_button_img)
+            self.tiles[j][i].config(image=self.de_button_img)
         elif new_string == "floor":
-            self.tiles[i][j].config(image=self.fl_button_img)
+            self.tiles[j][i].config(image=self.fl_button_img)
         elif new_string == "ogre":
-            self.tiles[i][j].config(image=self.og_button_img)
+            self.tiles[j][i].config(image=self.og_button_img)
         elif new_string == "wall":
-            self.tiles[i][j].config(image=self.wa_button_img)
+            self.tiles[j][i].config(image=self.wa_button_img)
 
 
 
+    def submit(self, event):
+        #get levelfile string
+        self.filestring = ''
+        act_man_count = 0
+        for row in self.tilestrings:
+            for c in row:
+                if c == "act-man":
+                    self.filestring = self.filestring + 'A'
+                    act_man_count = act_man_count+1
+                elif c == 'wall':
+                    self.filestring = self.filestring + '#'
+                elif c == 'demon':
+                    self.filestring = self.filestring + 'D'
+                elif c == 'floor':
+                    self.filestring = self.filestring + ' '
+                elif c == 'ogre':
+                    self.filestring = self.filestring + 'G'
+            self.filestring = self.filestring + '\n'
+        
+        #check that there is only 1 act man
+        print(act_man_count)
+        if act_man_count != 1:
+            messagebox.showerror("Error","You need to have exactly 1 act-man")
+            return
 
 
-
+        self.gamedata = dungeonCrawler.displayLevel(self.filestring)
+        #check that they beat the level
+        if self.gamedata[0] == 0:
+            messagebox.showerror("Error","You need to beat the game to submit it")
+            return
+        else:
+            #they beat the level, submit it and the solution
+            title =  simpledialog.askstring("Level Title","Please name the level:")
+            #check that the title is unique
+            submitted_level = query.submit_new_level(self.filestring,title,self.username)
+            print(submitted_level)
+            while not submitted_level:
+                title =  simpledialog.askstring("Level Title",f'{title} is taken, please choose a different name:')
+                if title == None:
+                    break
+                submitted_level = query.submit_new_level(self.filestring,title,self.username)
+            #submit solution
+            query.submit_solution(self.username,title,self.gamedata[1],self.gamedata[0])
+            self.root.quit()
+            return
 
 
 
 
 
 if __name__ == "__main__":
-    z = Level_designer('y')
+    z = Level_designer('joe miner')
