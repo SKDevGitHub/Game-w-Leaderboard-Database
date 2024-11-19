@@ -77,7 +77,7 @@ class Level_designer():
 
     
     def go_back(self, event):
-        self.root.quit()
+        self.root.destroy()
     
     def populate_board(self, event):
         #remove all buttons
@@ -182,8 +182,8 @@ class Level_designer():
             self.root.quit()
             return
 
-
-
+def display_level_designer(username):
+    z = Level_designer(username)
 
 
 if __name__ == "__main__":

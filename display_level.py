@@ -53,14 +53,12 @@ def display_level(levelname, username):
             leaderboard.insert('end', 'No users have completed this level')
         
 
-
-    def closed_window():
         #TODO: do i need this?
         root.quit()
         return "quit"
 
     def go_back(event):
-        root.quit()
+        root.destroy()
 
     def add_comment(event):
         text = comment_entry.get()
