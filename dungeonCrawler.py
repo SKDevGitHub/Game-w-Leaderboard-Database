@@ -1,8 +1,9 @@
 import pygame
 import random
 import math
+import server_request_handler as server
 
-def displayLevel(levelName):
+def displayLevel(levelName, username):
     pygame.init()
 
     width, height = 800, 600
@@ -355,5 +356,6 @@ def displayLevel(levelName):
             print(f"Score: {score}   MoveList: {moveList}")
             #insert data into database
             data = (score, moveList)
+            server.submit_solution(username, levelName, moveList, score)
     pygame.quit()
     return data
