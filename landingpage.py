@@ -3,6 +3,7 @@ from tkinter import messagebox
 import server_request_handler as server
 import display_level as dl
 import user_page as du
+import level_designer as ld
 
 FONT = ("Verdana", 12)
 def displayLanding(username):
@@ -29,6 +30,9 @@ def displayLanding(username):
             
             search_ubutton = tk.Button(self, text="Search User", command=self.searchUser)
             search_ubutton.pack(pady=(0,20))
+
+            leveldesginbutton = tk.Button(self, text = "Level Designer", command = self.gotoLevelD)
+            leveldesginbutton.pack(pady=(0,20))
         
         def searchLevel(self):
             levelName = self.search_level.get()
@@ -37,6 +41,9 @@ def displayLanding(username):
         def searchUser(self): 
             userName = self.search_user.get()
             search_user(userName)
+        
+        def gotoLevelD(self):
+             ld.display_level_designer(username)
 
     def search_level(page_name):
             check = server.search_for_level(page_name)
@@ -65,6 +72,6 @@ def displayLanding(username):
         
 
 if __name__ == "__main__":
-    username = "root"
+    username = "Stephen"
     server.connect("localhost", 2048)
     displayLanding(username)
