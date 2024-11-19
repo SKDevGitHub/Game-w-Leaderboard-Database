@@ -180,7 +180,7 @@ def display_ld(username):
                     submitted_level = query.submit_new_level(self.filestring,title,self.username)
                 #submit solution
                 query.submit_solution(self.username,title,self.gamedata[1],self.gamedata[0])
-                self.root.quit()
+                self.root.destroy()
                 return
 
     page = Level_designer(username)
