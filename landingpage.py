@@ -38,25 +38,28 @@ def displayLanding(username):
             userName = self.search_user.get()
             self.controller(userName)
 
-    def main():
         def search_level(page_name):
-            check = server.q
-            if page_name:
-                dl.display_level(page_name, username)
+            check = server.search_for_level(page_name)
+            if len(check) != 0:
+                dl.display_level(check[0], username)
             else:
                 tk.messagebox.showinfo("Level Not Found")
     
         def search_user(page_name):
-            pass
+            check = server.search_for_user(page_name)
+            if len(check) != 0:
+                du.displayUser(check[0])
+            else:
+                tk.messagebox.showinfo("User Not Found")
 
-        root = tk.Tk()
-        root.title("Landing Page")
-        root.geometry("400x400")
+    root = tk.Tk()
+    root.title("Landing Page")
+    root.geometry("400x400")
 
-        landing = landingPage(root)
-        landing.pack(fill = "both", expand = True)
+    landing = landingPage(root)
+    landing.pack(fill = "both", expand = True)
 
-        root.mainloop()
+    root.mainloop()
         
 
 if __name__ == "__main__":
