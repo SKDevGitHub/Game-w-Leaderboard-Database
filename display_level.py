@@ -145,6 +145,7 @@ def display_level(levelname, username):
 
     #leaderboard
     leaderboard_data = query.leaderboard_data_query(levelname)
+    leaderboard_data.sort(key = lambda x: x[1], reverse= True)
     leaderboard_button = Button(root,text="View Leaderboard")
     leaderboard_button.bind("<Button-1>", display_leaderboard)
     leaderboard_button.grid(row=1,column=0,sticky='s')
