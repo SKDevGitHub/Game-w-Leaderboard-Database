@@ -13,7 +13,7 @@ def display_level(levelname, username):
         display_rating_section()
         if gamedata[0] != 0: #they beat the level
             query.submit_solution(username,levelname,gamedata[1],gamedata[0])
-
+            leaderboard_data = query.leaderboard_data_query(levelname)
     def display_rating_section():
         diff_rating_menu.grid(column=6,row=1,sticky='e')
         rating_menu.grid(column=6,row=1,sticky='w')
