@@ -4,7 +4,6 @@ import display_level as dl
 import user_page as du
 
 FONT = ("Verdana", 12)
-
 def displayLanding(username):
     class landingPage(tk.Frame):
         def __init__(self, parent, controller):
@@ -39,26 +38,26 @@ def displayLanding(username):
             userName = self.search_user.get()
             self.controller(userName)
 
-    page_names = {
-        "game": "GamePage", 
-        "user": "UserPage"  
-    }
+    def main():
+        def search_level(page_name):
+            check = server.q
+            if page_name:
+                dl.display_level(page_name, username)
+            else:
+                tk.messagebox.showinfo("Level Not Found")
+    
+        def search_user(page_name):
+            pass
 
-    def search_page(page_name):
-        page_class = page_names.get(page_name.lower())
-        if page_class:
-            print(f"Navigating to: {page_class}")  
-        else:
-            print("Page not found")
+        root = tk.Tk()
+        root.title("Landing Page")
+        root.geometry("400x400")
 
-    root = tk.Tk()
-    root.title("Landing Page")
-    root.geometry("400x400")
+        landing = landingPage(root)
+        landing.pack(fill = "both", expand = True)
 
-    landing = landingPage(root, search_page)
-    landing.pack(fill = "both", expand = True)
-
-    root.mainloop()
+        root.mainloop()
+        
 
 if __name__ == "__main__":
     username = "root"
