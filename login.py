@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 from server_request_handler import login,register,connect
+from landingpage import *
 # Uploaded Customized login page. Still have the non-customized if you want to revert back
 def display_login():
     user_logged_in = None
@@ -115,5 +116,10 @@ def display_login():
 
     # Start the Tkinter event loop
     login_register_window.mainloop()
+    displayLanding(user_logged_in)
 
-    return user_logged_in
+
+
+if __name__== "__main__":
+    connect("localhost", 65432)
+    display_login()
