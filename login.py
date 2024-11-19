@@ -16,6 +16,7 @@ def display_login():
             user_logged_in = username
             messagebox.showinfo("Login Success", "You have successfully logged in!")
             login_register_window.destroy()  # Closes the login window
+            username= user_logged_in
         else:
             messagebox.showerror("Login Failed", "Incorrect username or password.")
 
@@ -116,7 +117,8 @@ def display_login():
 
     # Start the Tkinter event loop
     login_register_window.mainloop()
-    displayLanding(user_logged_in)
+    return user_logged_in
+
 
 
 

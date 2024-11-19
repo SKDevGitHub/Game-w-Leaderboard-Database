@@ -138,9 +138,6 @@ def display_level(levelname, username):
     back_button.bind("<Button-1>", go_back)
     back_button.grid(row=0,column=0,sticky="nw")
 
-    #if the window is closed, end application
-    root.protocol("WM_DELETE_WINDOW", closed_window)
-
     #leaderboard
     leaderboard_data = query.leaderboard_data_query(levelname)
     leaderboard_data.sort(key = lambda x: x[1], reverse= True)
@@ -166,10 +163,15 @@ def display_level(levelname, username):
 
     #display ratings
     ratings = query.get_level_ratings(levelname)
-    display_diff_rating = ratings[1]
+    if ratings == [None,None]:
+        display_diff_rating = 0
+        display_rating = 0
+    else:
+        display_diff_rating = ratings[1]
+        display_rating = ratings[0]
     display_diff_rating_label = Label(root, text=f'Difficulty rating: {display_diff_rating:.2f}/10')
     display_diff_rating_label.grid(column=3,row=1, sticky='n')
-    display_rating = ratings[0]
+    
     display_rating_label = Label(root, text=f'User rating: {display_rating:.2f}/10')
     display_rating_label.grid(column=3,row=1)
 
@@ -187,5 +189,5 @@ def display_level(levelname, username):
 
 if __name__ == "__main__":
     query.connect('localhost', 2048)
-    display_level('joe miners bad day','Ben')
+    display_level('lonelyguy','Ben')
     query.close_connection()
