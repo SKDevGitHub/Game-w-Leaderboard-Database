@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
 from server_request_handler import login,register,connect
-# TODO Test login with server connection
 # Uploaded Customized login page. Still have the non-customized if you want to revert back
 def display_login():
     user_logged_in = None
@@ -118,7 +117,3 @@ def display_login():
     login_register_window.mainloop()
 
     return user_logged_in
-
-if __name__ == "__main__":
-        connect("localhost", 204 )
-        print(display_login())
