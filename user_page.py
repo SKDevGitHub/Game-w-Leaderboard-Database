@@ -92,6 +92,8 @@ def displayUser(username):
         
         def go_back(self, event):
             self.root.quit()
+        
+    page = User_page(username)
 
 
 
