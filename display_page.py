@@ -1,36 +1,48 @@
 #import individual files here
 from landingpage import displayLanding
+import login
+import display_level as dl
+import level_designer as ld
+import user_page as up
+import server_request_handler as query
 
 display_page = "login"
-
+query.connect('localhost',2048)
 while True:
     if display_page == "login":
         
-        username = input()
-        displayLanding(username)
+        username = login.display_login()
         #this will only finish after the user logs in or registers
-        display_page = "landing"
+        if username != None:
+            display_page = "landing"
+        else:
+            break
     
     elif display_page == "landing":
         next_page, parameter = displayLanding(username)
 
         if next_page == "user":
-            display_user(parameter)
+            up.displayUser(parameter)
         
         elif next_page == "level":
-            display_level(parameter, username)
+            dl.display_level(parameter, username)
         
         elif next_page == "login":
             display_page = "login"
             username = None
 
-        elif next_page == "level_designer":
-            display_page = "level_designer"
+        elif next_page == "designer":
+            display_page = "designer"
+        else:
+            break
     
-    elif display_page == "level_designer":
-        display_level_designer()
+    elif display_page == "designer":
+        ld.display_ld(username)
         #go back to landing afterwards
         display_page = "landing"
     
-    elif display_page == "quit" or username == None:
+    elif display_page == None or username == None:
         break
+
+
+query.close_connection()

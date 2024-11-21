@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
-from server_request_handler import login,register
-# TODO Test login with server connection
+from server_request_handler import login,register,connect
+from landingpage import *
 # Uploaded Customized login page. Still have the non-customized if you want to revert back
 def display_login():
     user_logged_in = None
@@ -16,6 +16,7 @@ def display_login():
             user_logged_in = username
             messagebox.showinfo("Login Success", "You have successfully logged in!")
             login_register_window.destroy()  # Closes the login window
+            username= user_logged_in
         else:
             messagebox.showerror("Login Failed", "Incorrect username or password.")
 
@@ -116,8 +117,11 @@ def display_login():
 
     # Start the Tkinter event loop
     login_register_window.mainloop()
-
     return user_logged_in
 
-#if __name__ == "__main__":
-        #display_login()
+
+
+
+if __name__== "__main__":
+    connect("localhost", 65432)
+    display_login()

@@ -147,6 +147,8 @@ def rate_level(username: str, rating: int, difficulty: int, level_name: str) -> 
 def get_level_ratings(level_name: str) -> list:
     _send(f'SELECT AVG(userRating), AVG(diffRating) FROM Rating WHERE levelName = \"{level_name}\"')
     recv_raw = _recv()
+    if recv_raw == '[(None, None)]':
+        return [None,None]
     return tuple([float(r) for r in ast.literal_eval(recv_raw)[0]])
 
 def close_connection():
