@@ -352,6 +352,8 @@ def displayLevel(levelName):
         if gameOver:
             for _ in range(len(moveList)):
                 score -= 1
+            if score < 0:
+                score = 0
             result = "Win!" if playerWon else "Lose!"
             displayGameOver(score, result)
             running = False
