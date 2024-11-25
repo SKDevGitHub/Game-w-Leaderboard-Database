@@ -46,6 +46,8 @@ def display_level(levelname, username):
 
         #insert leaderboard tuples
         rank = 1
+        leaderboard_data = query.leaderboard_data_query(levelname)
+        leaderboard_data.sort(key = lambda x: x[1], reverse= True)
         for tuple in leaderboard_data:
             leaderboard.insert('end',f'{rank}. Username: {tuple[0]}, Score: {tuple[1]}, Date: {tuple[2][:10]}')
             rank = rank + 1
@@ -57,23 +59,50 @@ def display_level(levelname, username):
         root.destroy()
 
     def add_comment(event):
+        nonlocal comments
         text = comment_entry.get()
         comment_entry.delete(0, tk.END)
 
         query.create_comment(text,username,levelname)
+        if comment_box.get(0) == "No Comments Yet":
+            comment_box.delete(0)
+        comments = query.get_level_comments(levelname)
+        comment_box.insert('end', f'{username} says: {text} -> 0 likes, 0 dislikes')
 
     def like_comment(event):
+        nonlocal comments
+        if comment_box.get(0) == "No Comments Yet":
+            return
         index = comment_box.curselection()
         index = index[0]
         comment_id = comments[index][3]
         query.like_comment(comment_id)
 
+
+        comment_box.delete(index)
+        new_likes = comments[index][0] + 1
+        c = comments[index]
+        comments[index] = (new_likes, c[1],c[2],c[3],c[4],c[5])
+        c = comments[index]
+        comment_box.insert(index, f'{c[4]} says: {c[2]} -> {c[0]} likes, {c[1]} dislikes')
+
+
     def dislike_comment(event):
+        nonlocal comments
+        if comment_box.get(0) == "No Comments Yet":
+            return
         index = comment_box.curselection()
         index = index[0]
 
         comment_id = comments[index][3]
         query.dislike_comment(comment_id)
+
+        comment_box.delete(index)
+        new_dislikes = comments[index][1] + 1
+        c = comments[index]
+        comments[index] = (c[0], new_dislikes,c[2],c[3],c[4],c[5])
+        c = comments[index]
+        comment_box.insert(index, f'{c[4]} says: {c[2]} -> {c[0]} likes, {c[1]} dislikes')
     
     #query for comments
     comments = query.get_level_comments(levelname)
@@ -185,5 +214,5 @@ def display_level(levelname, username):
 
 if __name__ == "__main__":
     query.connect('localhost', 2048)
-    display_level('lonelyguy','Ben')
+    display_level('gh','Ben')
     query.close_connection()
